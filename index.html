@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitor The Situation - Real-Time Cyber Threat Tracker</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-content">
+      <h1>⚡ MONITOR THE SITUATION</h1>
+      <p>Real-Time Global Cyber Threat & Hacking Event Tracker</p>
+      <div class="stats">
+        <span>🔴 Live Events: <strong id="event-count">0</strong></span>
+        <span>🔥 Critical Threats: <strong id="critical-count">0</strong></span>
+        <span>📡 Last Updated: <strong id="last-updated">--:--</strong></span>
+        <span>🌍 Tracking Global Incidents</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+    <!-- MAP SECTION -->
+    <section class="map-section">
+      <h2>🗺️ Global Threat Map</h2>
+      <div id="map" class="map-container"></div>
+      <div class="map-legend">
+        <div class="legend-item">
+          <span class="dot red"></span>
+          <span>Critical Threat</span>
+        </div>
+        <div class="legend-item">
+          <span class="dot orange"></span>
+          <span>High Priority</span>
+        </div>
+        <div class="legend-item">
+          <span class="dot yellow"></span>
+          <span>Medium Alert</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWS SECTION -->
+    <section class="news-section">
+      <h2>📰 Recent Cyber Events & Tech News</h2>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">🔹 All Events</button>
+        <button class="filter-btn" data-filter="breach">🔓 Data Breach</button>
+        <button class="filter-btn" data-filter="vulnerability">⚠️ Vulnerability</button>
+        <button class="filter-btn" data-filter="attack">🎯 Attack</button>
+      </div>
+      <ul id="news-feed" class="news-feed">
+        <li class="loading">🔄 Loading cyber events...</li>
+      </ul>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="stats-section">
+      <h2>📊 Global Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Events</h3>
+          <p id="total-events">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Today's Incidents</h3>
+          <p id="today-events">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Active Threats</h3>
+          <p id="active-threats">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Critical Issues</h3>
+          <p id="critical-issues">0</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Monitor The Situation | Real-Time Cyber Threat Intelligence Platform</p>
+    <p>Powered by Free APIs | Built with GitHub Pages | Tracking Global Cyber Incidents</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
