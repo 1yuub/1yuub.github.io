@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Global Hackathon & Tech News Monitor — Interactive world map tracking hackathons, tech news, security incidents, and conferences worldwide." />
+  <meta name="theme-color" content="#0f172a" />
+
+  <title>TechMap — Global Hackathon & Tech News Monitor</title>
+
+  <!-- Leaflet CSS (bundled locally) -->
+  <link rel="stylesheet" href="lib/leaflet.css" />
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Preconnect for map tiles -->
+  <link rel="preconnect" href="https://basemaps.cartocdn.com" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     Loading Overlay
+═══════════════════════════════════════════════════════════ -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Loading events from around the world…</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     App Shell
+═══════════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <header id="header">
+    <div class="header-left">
+      <a class="logo" href="/" aria-label="TechMap Home">
+        <div class="logo-icon">🌍</div>
+        <span>TechMap</span>
+      </a>
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        LIVE
+      </div>
+    </div>
+
+    <div class="header-center">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Search events, countries…"
+          aria-label="Search events"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="header-right">
+      <button id="theme-toggle"   class="icon-btn" title="Toggle theme"  aria-label="Toggle light/dark theme">☀️</button>
+      <button id="refresh-btn"    class="icon-btn" title="Refresh events" aria-label="Refresh event data">🔄</button>
+      <button id="export-btn"     class="icon-btn" title="Export JSON"    aria-label="Export events as JSON">📥</button>
+    </div>
+  </header>
+
+  <!-- ── Main ───────────────────────────────────────────── -->
+  <div id="main">
+
+    <!-- ── Sidebar ──────────────────────────────────────── -->
+    <aside id="sidebar" aria-label="Event list">
+
+      <div class="sidebar-header">
+        <div class="sidebar-title">Filter by type</div>
+        <div class="filter-chips">
+          <button class="chip chip-hackathon active" data-type="hackathon" title="Hackathons">
+            <span class="chip-dot"></span> Hackathons
+          </button>
+          <button class="chip chip-security active" data-type="security" title="Security">
+            <span class="chip-dot"></span> Security
+          </button>
+          <button class="chip chip-conference active" data-type="conference" title="Conferences">
+            <span class="chip-dot"></span> Conferences
+          </button>
+          <button class="chip chip-technews active" data-type="technews" title="Tech News">
+            <span class="chip-dot"></span> Tech News
+          </button>
+        </div>
+      </div>
+
+      <!-- Event counts -->
+      <div class="event-counts">
+        <div class="count-badge">
+          <span style="color:var(--hackathon)">⚡</span>
+          <strong id="count-hackathon">0</strong>
+        </div>
+        <div class="count-badge">
+          <span style="color:var(--security)">🔒</span>
+          <strong id="count-security">0</strong>
+        </div>
+        <div class="count-badge">
+          <span style="color:var(--conference)">🎯</span>
+          <strong id="count-conference">0</strong>
+        </div>
+        <div class="count-badge">
+          <span style="color:var(--technews)">📡</span>
+          <strong id="count-technews">0</strong>
+        </div>
+      </div>
+
+      <!-- Event List -->
+      <div id="event-list" role="list" aria-label="Events">
+        <div class="empty-state">
+          <div class="empty-state-icon">🌍</div>
+          <div class="empty-state-text">Loading events…</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Sidebar Toggle ────────────────────────────────── -->
+    <button id="sidebar-toggle" class="sidebar-toggle" title="Toggle sidebar" aria-label="Toggle sidebar">‹</button>
+
+    <!-- ── Map ──────────────────────────────────────────── -->
+    <main id="map-container" aria-label="Interactive world map">
+      <div id="map"></div>
+
+      <!-- Map overlays -->
+      <div class="map-controls">
+        <button id="reset-view-btn" class="map-btn" title="Reset map view" aria-label="Reset map view">🌐</button>
+      </div>
+
+      <!-- Legend -->
+      <div class="map-legend" aria-label="Map legend">
+        <div class="legend-title">Legend</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--hackathon)"></div> Hackathon</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--security)"></div> Security</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--conference)"></div> Conference</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--technews)"></div> Tech News</div>
+      </div>
+    </main>
+
+  </div><!-- /#main -->
+
+  <!-- ── Status Bar ──────────────────────────────────────── -->
+  <footer id="status-bar" aria-label="Status bar">
+    <div class="status-item" id="status-source">● Connecting…</div>
+    <div class="status-item" id="status-update">—</div>
+    <div class="status-item" id="status-count">—</div>
+    <div class="status-item" style="margin-left:auto;color:var(--text-muted)">
+      Data: HackerNews · OpenStreetMap · CARTO
+    </div>
+  </footer>
+
+</div><!-- /#app -->
+
+<!-- ══════════════════════════════════════════════════════════
+     Event Modal
+═══════════════════════════════════════════════════════════ -->
+<div id="modal-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Event details">
+  <div id="event-modal" class="modal">
+    <div id="modal-content"><!-- Filled dynamically --></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     Toast Container
+═══════════════════════════════════════════════════════════ -->
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     Scripts
+═══════════════════════════════════════════════════════════ -->
+<!-- Leaflet JS (bundled locally) -->
+<script src="lib/leaflet.js"></script>
+
+<!-- App Scripts (order matters) -->
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/map.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
